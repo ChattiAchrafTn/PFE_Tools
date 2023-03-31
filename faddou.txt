@@ -1,0 +1,38 @@
+import os
+import shutil
+import random
+
+# define the source folder path where the files are located
+source_flder_path = "C:/Users/hedib/Desktop/imagesTest/"
+
+# define the destination folder names
+destination_train = "train"
+destination_val = "val"
+
+percentageT = 70
+percentageV = 30
+
+# create the destination folders if they don't exist
+destination_train = os.path.join(source_flder_path, destination_train)
+destination_val = os.path.join(source_flder_path, destination_val)
+
+if not os.path.exists(destination_train):
+    os.mkdir(destination_train)
+if not os.path.exists(destination_val):
+    os.mkdir(destination_val)
+
+# get a list of all files in the source folder
+all_files = os.listdir(source_flder_path)
+
+# calculate the number of files to copy to each destination folder based on the percentages
+num_filesT = int(len(all_files) * (percentageT / 100)) #35
+num_filesV = int(len(all_files)) - num_filesT #15
+
+# randomly select the files to copy to each destination folder
+files1 = random.sample(all_files, num_filesT)
+files2 = random.sample(list(set(all_files) - set(files1)), num_filesV)
+# copy the files to the destination folders
+for filename in files1:
+    source_pfile_path = os.path.join(source_flder_path, filename)
+    destination_pfile_path = os.path.join(destination_train, filename)
+    shutil.copy(source_pfile_path, destination_pfile_path)
